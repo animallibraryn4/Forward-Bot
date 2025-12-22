@@ -9,6 +9,12 @@ import time, re
 import asyncio 
 import logging
 import random
+
+import asyncio
+if not hasattr(asyncio, "coroutine"):
+    import asyncio.coroutines
+    asyncio.coroutine = asyncio.coroutines.coroutine
+    
 from .utils import STS
 from database import Db, db
 from .test import CLIENT, get_client, iter_messages
