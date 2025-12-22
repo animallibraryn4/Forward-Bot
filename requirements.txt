@@ -2,13 +2,10 @@ pyrofork
 tgcrypto
 pyropatch
 humanize 
-# Motor 3.3.0+ is required for Python 3.12
 motor>=3.3.0
 TgCrypto
 Dnspython
-# PyMongo 4.5+ is required for modern Motor versions
 pymongo[srv]>=4.5.0
-# umongo 3.1.0+ has better support for modern dependencies
 umongo>=3.1.0
 psutil
 pytz
