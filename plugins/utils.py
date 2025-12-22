@@ -4,7 +4,7 @@
 
 import time as tm
 from database import Db, db
-from .test import parse_buttons
+from .test import parse_buttons, apply_replace_rules  # Import apply_replace_rules
 
 STATUS = {}
 
@@ -60,8 +60,18 @@ class STS:
            min = 0
            max = 0
         button = parse_buttons(configs['button'] if configs['button'] else '')
-        return bot, configs['caption'], configs['forward_tag'], {'filters': filters,
-                'keywords': configs['keywords'], 'min_size': min, 'max_size': max, 'extensions': configs['extension'], 'skip_duplicate': duplicate, 'db_uri': configs['db_uri']}, configs['protect'], button
+        replace_rules = configs.get('replace_rules', [])  # Get replacement rules
+        
+        return bot, configs['caption'], configs['forward_tag'], {
+                'filters': filters,
+                'keywords': configs['keywords'], 
+                'min_size': min, 
+                'max_size': max, 
+                'extensions': configs['extension'], 
+                'skip_duplicate': duplicate, 
+                'db_uri': configs['db_uri'],
+                'replace_rules': replace_rules  # Include replace rules
+            }, configs['protect'], button
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
