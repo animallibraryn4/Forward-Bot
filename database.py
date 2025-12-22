@@ -89,6 +89,7 @@ class Db:
             'protect': None,
             'button': None,
             'db_uri': None,
+            'replace_rules': [],  # NEW: Added replacement rules
             'filters': {
                'poll': True,
                'text': True,
@@ -103,7 +104,11 @@ class Db:
         }
         user = await self.col.find_one({'id':int(id)})
         if user:
-            return user.get('configs', default)
+            user_configs = user.get('configs', {})
+            # Ensure replace_rules exists in user configs
+            if 'replace_rules' not in user_configs:
+                user_configs['replace_rules'] = []
+            return user_configs
         return default 
 
     async def add_bot(self, datas):
@@ -210,4 +215,42 @@ class Db:
     async def update_forward(self, user_id, details):
         await self.nfy.update_one({'user_id': user_id}, {'$set': {'details': details}})
         
+    # NEW: Methods for replacement rules
+    async def add_replace_rule(self, user_id, old_text, new_text):
+        configs = await self.get_configs(user_id)
+        replace_rules = configs.get('replace_rules', [])
+        
+        # Check if rule already exists
+        for rule in replace_rules:
+            if rule.get('old_text') == old_text:
+                rule['new_text'] = new_text
+                break
+        else:
+            replace_rules.append({'old_text': old_text, 'new_text': new_text})
+        
+        configs['replace_rules'] = replace_rules
+        await self.update_configs(user_id, configs)
+        return True
+    
+    async def remove_replace_rule(self, user_id, old_text):
+        configs = await self.get_configs(user_id)
+        replace_rules = configs.get('replace_rules', [])
+        
+        # Remove the rule
+        new_rules = [rule for rule in replace_rules if rule.get('old_text') != old_text]
+        
+        configs['replace_rules'] = new_rules
+        await self.update_configs(user_id, configs)
+        return True
+    
+    async def get_replace_rules(self, user_id):
+        configs = await self.get_configs(user_id)
+        return configs.get('replace_rules', [])
+    
+    async def clear_all_replace_rules(self, user_id):
+        configs = await self.get_configs(user_id)
+        configs['replace_rules'] = []
+        await self.update_configs(user_id, configs)
+        return True
+
 db = Db(Config.DATABASE_URI, Config.DATABASE_NAME)
