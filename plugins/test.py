@@ -225,20 +225,34 @@ async def iter_messages(
     max_size: int = None,
 ) -> Optional[AsyncGenerator["types.Message", None]]:
         current = offset
-        dup_files = []
+        count = 0
+        
         while True:
-            new_diff = min(200, limit - current)
+            if count >= limit:
+                return
+                
+            # Calculate how many messages to fetch (max 200 at a time)
+            new_diff = min(200, limit - count)
             if new_diff <= 0:
                 return
 
-            messages = await self.get_messages(chat_id, list(range(current, current + new_diff + 1)))
+            # Get messages from current to current+new_diff
+            messages = await self.get_messages(chat_id, list(range(current, current + new_diff)))
+            
             for message in messages:
-                if any(getattr(message, media_type, False) for media_type in filters):
-                    yield "FILTERED"
-                else:
-                    yield message
-                    
+                if message and not message.empty:
+                    # Apply filters if specified
+                    if filters and any(getattr(message, media_type, False) for media_type in filters):
+                        yield "FILTERED"
+                    else:
+                        yield message
+                
+                count += 1
                 current += 1
+                
+                # Stop if we've reached the limit
+                if count >= limit:
+                    return
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
