@@ -190,11 +190,27 @@ async def get_configs(user_id):
 
 async def update_configs(user_id, key, value):
   current = await db.get_configs(user_id)
-  if key in ['caption', 'duplicate', 'db_uri', 'forward_tag', 'protect', 'min_size', 'max_size', 'extension', 'keywords', 'button']:
+  if key in ['caption', 'duplicate', 'db_uri', 'forward_tag', 'protect', 'min_size', 'max_size', 'extension', 'keywords', 'button', 'replace_rules']:
      current[key] = value
   else: 
      current['filters'][key] = value
   await db.update_configs(user_id, current)
+
+# NEW: Helper function to apply replacement rules
+def apply_replace_rules(text, replace_rules):
+    """
+    Apply all replacement rules to the given text
+    """
+    if not text or not replace_rules:
+        return text
+    
+    for rule in replace_rules:
+        old_text = rule.get('old_text', '')
+        new_text = rule.get('new_text', '')
+        if old_text and new_text:
+            text = text.replace(old_text, new_text)
+    
+    return text
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
