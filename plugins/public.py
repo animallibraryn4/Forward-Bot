@@ -48,7 +48,7 @@ async def run(bot, message):
        to_title = channels[0]['title']
     
     # Ask for STARTING message (first message in range)
-    await bot.send_message(user_id, Script.START_MSG, reply_markup=ReplyKeyboardRemove())
+    await bot.send_message(user_id, "**❪ SET STARTING MESSAGE ❫**\n\nForward the FIRST message in the range you want to forward.", reply_markup=ReplyKeyboardRemove())
     start_msg = await bot.ask(user_id, text="**Forward the STARTING message (first message in range) from source chat or send its message link.**\n/cancel - `cancel this process`")
     
     if start_msg.text and start_msg.text.startswith('/'):
@@ -61,7 +61,7 @@ async def run(bot, message):
         return
     
     # Ask for ENDING message (last message in range)
-    await bot.send_message(user_id, Script.END_MSG, reply_markup=ReplyKeyboardRemove())
+    await bot.send_message(user_id, "**❪ SET ENDING MESSAGE ❫**\n\nForward the LAST message in the range you want to forward.", reply_markup=ReplyKeyboardRemove())
     end_msg = await bot.ask(user_id, text="**Forward the ENDING message (last message in range) from source chat or send its message link.**\n/cancel - `cancel this process`")
     
     if end_msg.text and end_msg.text.startswith('/'):
@@ -104,16 +104,25 @@ async def run(bot, message):
         InlineKeyboardButton('No', callback_data="close_btn")
     ]]
     reply_markup = InlineKeyboardMarkup(buttons)
+    
+    # Create confirmation message
+    confirmation_text = f"""
+**BOT DETAILS:**
+┣ **BOT:** [{_bot['name']}](t.me/{_bot['username']})
+
+**SOURCE CHAT:** `{title}`
+**TARGET CHAT:** `{to_title}`
+
+**MESSAGE RANGE:**
+┣ **Start Message ID:** `{start_msg_id}`
+┣ **End Message ID:** `{end_msg_id}`
+┣ **Total Messages:** `{total_messages}`
+
+**Do you want to start forwarding?**
+"""
+    
     await message.reply_text(
-        text=Script.DOUBLE_CHECK_RANGE.format(
-            botname=_bot['name'], 
-            botuname=_bot['username'], 
-            from_chat=title, 
-            to_chat=to_title, 
-            start_msg=start_msg_id,
-            end_msg=end_msg_id,
-            total=total_messages
-        ),
+        text=confirmation_text,
         disable_web_page_preview=True,
         reply_markup=reply_markup
     )
@@ -123,7 +132,8 @@ async def run(bot, message):
 async def parse_message_info(bot, msg):
     """Parse message info from forwarded message or link"""
     if msg.text and not msg.forward_date:
-        regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+        # Use raw string for regex to avoid escape sequence warning
+        regex = re.compile(r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
         match = regex.match(msg.text.replace("?single", ""))
         if not match:
             await msg.reply('Invalid link')
