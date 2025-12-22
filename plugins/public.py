@@ -46,53 +46,103 @@ async def run(bot, message):
     else:
        toid = channels[0]['chat_id']
        to_title = channels[0]['title']
-    fromid = await bot.ask(message.chat.id, Script.FROM_MSG, reply_markup=ReplyKeyboardRemove())
-    if fromid.text and fromid.text.startswith('/'):
+    
+    # Ask for STARTING message (first message in range)
+    await bot.send_message(user_id, Script.START_MSG, reply_markup=ReplyKeyboardRemove())
+    start_msg = await bot.ask(user_id, text="**Forward the STARTING message (first message in range) from source chat or send its message link.**\n/cancel - `cancel this process`")
+    
+    if start_msg.text and start_msg.text.startswith('/'):
         await message.reply(Script.CANCEL)
         return 
-    if fromid.text and not fromid.forward_date:
-        regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
-        match = regex.match(fromid.text.replace("?single", ""))
-        if not match:
-            return await message.reply('Invalid link')
-        chat_id = match.group(4)
-        last_msg_id = int(match.group(5))
-        if chat_id.isnumeric():
-            chat_id  = int(("-100" + chat_id))
-    elif fromid.forward_from_chat.type in [enums.ChatType.CHANNEL, 'supergroup']:
-        last_msg_id = fromid.forward_from_message_id
-        chat_id = fromid.forward_from_chat.username or fromid.forward_from_chat.id
-        if last_msg_id == None:
-           return await message.reply_text("**This may be a forwarded message from a group and sended by anonymous admin. instead of this please send last message link from group**")
-    else:
-        await message.reply_text("**invalid !**")
+    
+    # Parse starting message info
+    start_chat_id, start_msg_id = await parse_message_info(bot, start_msg)
+    if not start_chat_id:
+        return
+    
+    # Ask for ENDING message (last message in range)
+    await bot.send_message(user_id, Script.END_MSG, reply_markup=ReplyKeyboardRemove())
+    end_msg = await bot.ask(user_id, text="**Forward the ENDING message (last message in range) from source chat or send its message link.**\n/cancel - `cancel this process`")
+    
+    if end_msg.text and end_msg.text.startswith('/'):
+        await message.reply(Script.CANCEL)
         return 
+    
+    # Parse ending message info
+    end_chat_id, end_msg_id = await parse_message_info(bot, end_msg)
+    if not end_chat_id:
+        return
+    
+    # Verify both messages are from same chat
+    if start_chat_id != end_chat_id:
+        await message.reply_text("**Error: Starting and ending messages must be from the same chat!**")
+        return
+    
+    # Calculate range (messages between start and end, inclusive)
+    if start_msg_id > end_msg_id:
+        # Swap if start is after end
+        start_msg_id, end_msg_id = end_msg_id, start_msg_id
+    
+    total_messages = (end_msg_id - start_msg_id) + 1
+    
+    if total_messages <= 0:
+        await message.reply_text("**Error: Invalid message range!**")
+        return
+    
     try:
-        title = (await bot.get_chat(chat_id)).title
-  #  except ChannelInvalid:
-        #return await fromid.reply("**Given source chat is copyrighted channel/group. you can't forward messages from there**")
+        title = (await bot.get_chat(start_chat_id)).title
     except (PrivateChat, ChannelPrivate, ChannelInvalid):
-        title = "private" if fromid.text else fromid.forward_from_chat.title
+        title = "private" if start_msg.text else start_msg.forward_from_chat.title
     except (UsernameInvalid, UsernameNotModified):
         return await message.reply('Invalid Link specified.')
     except Exception as e:
         return await message.reply(f'Errors - {e}')
-    skipno = await bot.ask(message.chat.id, Script.SKIP_MSG)
-    if skipno.text.startswith('/'):
-        await message.reply(Script.CANCEL)
-        return
-    forward_id = f"{user_id}-{skipno.id}"
+    
+    forward_id = f"{user_id}-{start_msg_id}"
     buttons = [[
         InlineKeyboardButton('Yes', callback_data=f"start_public_{forward_id}"),
         InlineKeyboardButton('No', callback_data="close_btn")
     ]]
     reply_markup = InlineKeyboardMarkup(buttons)
     await message.reply_text(
-        text=Script.DOUBLE_CHECK.format(botname=_bot['name'], botuname=_bot['username'], from_chat=title, to_chat=to_title, skip=skipno.text),
+        text=Script.DOUBLE_CHECK_RANGE.format(
+            botname=_bot['name'], 
+            botuname=_bot['username'], 
+            from_chat=title, 
+            to_chat=to_title, 
+            start_msg=start_msg_id,
+            end_msg=end_msg_id,
+            total=total_messages
+        ),
         disable_web_page_preview=True,
         reply_markup=reply_markup
     )
-    STS(forward_id).store(chat_id, toid, int(skipno.text), int(last_msg_id))
+    # Store: start_msg_id as "skip" (first message), total_messages as "limit"
+    STS(forward_id).store(start_chat_id, toid, start_msg_id, total_messages)
+
+async def parse_message_info(bot, msg):
+    """Parse message info from forwarded message or link"""
+    if msg.text and not msg.forward_date:
+        regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+        match = regex.match(msg.text.replace("?single", ""))
+        if not match:
+            await msg.reply('Invalid link')
+            return None, None
+        chat_id = match.group(4)
+        message_id = int(match.group(5))
+        if chat_id.isnumeric():
+            chat_id = int(("-100" + chat_id))
+    elif msg.forward_from_chat.type in [enums.ChatType.CHANNEL, 'supergroup']:
+        message_id = msg.forward_from_message_id
+        chat_id = msg.forward_from_chat.username or msg.forward_from_chat.id
+        if message_id is None:
+            await msg.reply_text("**This may be a forwarded message from a group and sent by anonymous admin. Please send message link instead.**")
+            return None, None
+    else:
+        await msg.reply_text("**Invalid message format!**")
+        return None, None
+    
+    return chat_id, message_id
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
