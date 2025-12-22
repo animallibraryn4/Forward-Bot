@@ -105,10 +105,23 @@ class Db:
         user = await self.col.find_one({'id':int(id)})
         if user:
             user_configs = user.get('configs', {})
-            # Ensure replace_rules exists in user configs
-            if 'replace_rules' not in user_configs:
-                user_configs['replace_rules'] = []
-            return user_configs
+            # Merge with default to ensure all keys exist
+            merged_configs = default.copy()
+            merged_configs.update(user_configs)
+            # Ensure filters exist and has all keys
+            if 'filters' not in merged_configs:
+                merged_configs['filters'] = default['filters']
+            else:
+                # Ensure all filter keys exist
+                for key in default['filters']:
+                    if key not in merged_configs['filters']:
+                        merged_configs['filters'][key] = default['filters'][key]
+            
+            # Ensure replace_rules exists
+            if 'replace_rules' not in merged_configs:
+                merged_configs['replace_rules'] = []
+            
+            return merged_configs
         return default 
 
     async def add_bot(self, datas):
@@ -166,8 +179,9 @@ class Db:
 
     async def get_filters(self, user_id):
        filters = []
-       filter = (await self.get_configs(user_id))['filters']
-       for k, v in filter.items():
+       configs = await self.get_configs(user_id)
+       filter_dict = configs.get('filters', {})
+       for k, v in filter_dict.items():
           if v == False:
             filters.append(str(k))
        return filters
