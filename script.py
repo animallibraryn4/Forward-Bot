@@ -113,3 +113,24 @@ class  Script(object):
 <b>If the above is checked then the yes button can be clicked</b>"""
   
 SETTINGS_TXT = """<b>change your settings as your wish</b>"""
+
+
+# New strings for range forwarding
+START_MSG = "**❪ SET STARTING MESSAGE ❫**\n\nForward the FIRST message in the range you want to forward."
+END_MSG = "**❪ SET ENDING MESSAGE ❫**\n\nForward the LAST message in the range you want to forward."
+
+DOUBLE_CHECK_RANGE = """
+**BOT DETAILS:**
+┣ **BOT:** [{botname}](t.me/{botuname})
+
+**SOURCE CHAT:** `{from_chat}`
+**TARGET CHAT:** `{to_chat}`
+
+**MESSAGE RANGE:**
+┣ **Start Message ID:** `{start_msg}`
+┣ **End Message ID:** `{end_msg}`
+┣ **Total Messages:** `{total}`
+
+**Do you want to start forwarding?**
+"""
+
