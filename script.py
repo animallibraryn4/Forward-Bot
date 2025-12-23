@@ -134,3 +134,13 @@ DOUBLE_CHECK_RANGE = """
 **Do you want to start forwarding?**
 """
 
+# Don't Remove Credit Tg - @VJ_Botz
+# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
+# Ask Doubt on telegram @KingVJ01
+
+# ... existing code ...
+
+TO_MSG = "**❪ CHOOSE TARGET CHAT ❫**\n\nChoose the target chat from below where you want to store files.\n\n**NOTE:** The [{0}](t.me/{1}) must be admin in the target chat with full permissions."
+CANCEL = "**Process Cancelled Successfully ✅**"
+
+# ... rest of your existing script.py ...
