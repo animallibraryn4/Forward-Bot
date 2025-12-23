@@ -212,9 +212,6 @@ def apply_replace_rules(text, replace_rules):
     
     return text
 
-# Don't Remove Credit Tg - @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
 
 async def iter_messages(
     self,
@@ -224,11 +221,11 @@ async def iter_messages(
     filters: dict = None,
     max_size: int = None,
 ) -> Optional[AsyncGenerator["types.Message", None]]:
-        current = offset
+        current = offset  # This is now the STARTING message ID
         count = 0
         
         while True:
-            if count >= limit:
+            if count >= limit:  # limit is now TOTAL messages to forward
                 return
                 
             # Calculate how many messages to fetch (max 200 at a time)
