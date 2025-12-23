@@ -82,7 +82,8 @@ async def unequify(client, message):
    if target.text and target.text.startswith("/"):
       return await message.reply("**process cancelled !**")
    elif target.text:
-      regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
+      # Use raw string for regex to avoid escape sequence warning
+      regex = re.compile(r"(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
       match = regex.match(target.text.replace("?single", ""))
       if not match:
          return await message.reply('**Invalid link**')
