@@ -1,84 +1,215 @@
-<h1 align="center">
-    ──「 TG FILE SEQUENCE BOT 」──
-</h1>
+Perfect 👍
+Neeche 4 FULL COPY-PASTE READY VERSIONS + Banner de raha hoon.
+Tum jo chaho wo use karo, ya mix & match bhi kar sakte ho.
 
-<p align="center">
-  <img src="https://files.catbox.moe/hwt0gl.jpg" alt="Bot Logo">
-</p>
-
-<p align="center">
-  <a href="https://www.python.org/"> <img src="https://img.shields.io/badge/Language-Python-orange?style=for-the-badge&logo=python" alt="Python" /> </a>
-  <a href="https://github.com/RioShin2025/SequenceBot/blob/main/LICENSE"> <img src="https://img.shields.io/badge/License-MIT-blueviolet?style=for-the-badge" alt="License" /> </a>
-</p>
-
-━━━━━━━━━━━━━━━━━━━━
-
-### 🤖 About the Bot
-The **TG File Sequence Bot** is a specialized tool designed to organize and sequence media files (Movies, Series, Episodes) automatically. It parses filenames to detect Season, Episode, and Quality, ensuring that files are delivered to your users in the perfect order.
 
 ---
 
-### ✨ Features
-- **Smart Parsing**: Automatically detects Episode numbers, Seasons, and Video Quality (480p, 720p, 1080p, etc.) from filenames.
-- **Two Sequencing Modes**:
-  - `Episode Flow`: Organized as Season -> Episode -> Quality.
-  - `Quality Flow`: Organized as Season -> Quality -> Episode.
-- **LS Mode (Batch Processing)**: Sequence entire ranges of files from a channel using message links.
-- **Multi-Channel Force Subscribe**: Supports up to 3 channels to boost your community growth.
-- **Database Driven**: Uses MongoDB to track user statistics and global settings.
-- **Admin Suite**: Includes broadcast tools, real-time status monitoring, and a global leaderboard.
-- **Web Server Integration**: Built-in Flask server to keep the bot alive on platforms like Render or Koyeb.
+🖼️ PROFESSIONAL BANNER (Use in README top)
+
+📌 Paste this at the very top of README
+
+![TG File Sequence Bot](https://i.rj1.dev/Ccvey.png)
+
+Agar future me custom banner chahiye (dark / neon / minimal), main design idea + exact prompt bhi de dunga.
+
 
 ---
 
-### 🛠️ Commands
-| Command | Description |
-| :--- | :--- |
-| `/start` | Initializes the bot and displays the welcome message. |
-| `/sequence` | Starts the manual file sequencing process. |
-| `/fileseq` | Switch between 'Episode Flow' and 'Quality Flow'. |
-| `/ls` | Batch sequence files by providing the start and end message links from a channel. |
-| `/leaderboard`| Displays the top contributors/users. |
-| `/status` | (Admin) View bot uptime, database health, and user count. |
-| `/broadcast`| (Admin) Send a message to all registered users. |
+🌑 1️⃣ DARK THEME README (Premium Look)
+
+![TG File Sequence Bot](https://i.rj1.dev/Ccvey.png)
+
+# 🌑 TG File Sequence Bot
+
+> A powerful Telegram bot for automatic file sequencing and organization.  
+> Designed for large collections, channels, and professional workflows.
 
 ---
 
-### 🚀 Local Deployment
+## 🖤 Features
 
-1. **Clone the Repository**:
-   ```bash
-   git clone [https://github.com/RioShin2025/SequenceBot.git](https://github.com/RioShin2025/SequenceBot.git)
-   cd SequenceBot
+### 🔁 File Sequencing
+• Auto numbering (001, 002, 003…)  
+• Season / Episode / Quality detection  
+• Episode Flow & Quality Flow modes  
+• Channel and group support  
 
- * Install Dependencies:
-   pip install -r requirements.txt
+### 📊 User System
+• Leaderboard tracking  
+• User statistics  
+• Admin controls  
+• Broadcast messaging  
 
- * Configure Variables:
-   Open config.py and fill in your credentials:
-   * API_ID & API_HASH: Get them from my.telegram.org.
-   * BOT_TOKEN: Obtain from @BotFather.
-   * MONGO_URI: Your MongoDB connection string.
-   * OWNER_ID: Your Telegram User ID.
- * Run the Bot:
-   python3 sequence.py
+### ⚙️ Advanced
+• LS Mode (link-based sequencing)  
+• Multi-channel output  
+• Optional Force Subscribe  
+• Fully editable messages  
 
-🌐 Cloud Deployment
-The bot is ready for deployment on Heroku, Render, or VPS:
- * Heroku: Use the provided app.json for one-click deployment.
- * Render/Koyeb: The webserver.py file acts as the entry point to satisfy the port binding requirements. Use python3 webserver.py as your start command.
-🤝 Credits & Support
- * Developer: Rio Shin
- * Organization: Bots Kingdom
- * Base Project: Sahil0976
-━━━━━━━━━━━━━━━━━━━━
-<p align="center">
-Built with ❤️ for the Telegram Community
-</p>
+---
 
-### Improvements made:
+## 📟 Commands
 
-1.  **Professional Tone**: Used clear, technical English suitable for a GitHub repository.
-2.  **Deployment Guide**: Specifically mentioned how to use `webserver.py` for platforms like Render, which is often a pain point for users.
-3.  **Command Table**: Organized commands into a readable table format.
-4.  **Logic Highlights**: Explained the difference between `Episode Flow` and `Quality Flow` based on your `sequence.py` logic.
+**Users**
+
+/start /sequence /fileseq /ls /leaderboard /help
+
+**Admins**
+
+/status /broadcast /users
+
+---
+
+## 🚀 Deployment
+
+```bash
+git clone https://github.com/RioShin2025/SequenceBot
+cd SequenceBot
+pip install -r requirements.txt
+python3 sequence.py
+
+
+---
+
+🛠️ Configuration
+
+Edit config.py:
+
+API_ID = YOUR_API_ID
+API_HASH = "YOUR_API_HASH"
+BOT_TOKEN = "YOUR_BOT_TOKEN"
+MONGO_URI = "YOUR_MONGO_URI"
+OWNER_ID = YOUR_ID
+
+
+---
+
+📄 License
+
+MIT License © Rio Shin
+
+---
+
+# ⚪ 2️⃣ MINIMAL README (Clean & Fast)
+
+```md
+# TG File Sequence Bot
+
+A Telegram bot that automatically sequences and organizes files.
+
+## Features
+• Auto numbering  
+• Smart filename parsing  
+• Multiple sorting modes  
+• Channel support  
+
+## Commands
+/start • /sequence • /fileseq • /ls • /leaderboard
+
+## Run
+```bash
+pip install -r requirements.txt
+python3 sequence.py
+
+License
+
+MIT
+
+---
+
+# 😍 3️⃣ ULTRA-EMOJI README (Eye-catching)
+
+```md
+![TG File Sequence Bot](https://i.rj1.dev/Ccvey.png)
+
+# 📁✨ TG File Sequence Bot
+
+🔥 The ultimate Telegram file sequencing bot 🔥
+
+---
+
+## 🚀 What it does
+✅ Auto numbers files  
+✅ Detects season & episode  
+✅ Sorts by episode or quality  
+✅ Works in channels & groups  
+
+---
+
+## 🧠 Smart Modes
+🎬 Episode Flow  
+🎞️ Quality Flow  
+
+---
+
+## 📟 Commands
+👤 Users
+/start | /sequence | /fileseq | /ls | /leaderboard  
+
+👑 Admins
+/status | /broadcast | /users  
+
+---
+
+## 🛠️ Setup
+```bash
+git clone https://github.com/RioShin2025/SequenceBot
+pip install -r requirements.txt
+python3 sequence.py
+
+
+---
+
+💎 License
+
+MIT © Rio Shin
+
+---
+
+# 📱 4️⃣ GitHub MOBILE-OPTIMIZED README
+
+```md
+# 📁 TG File Sequence Bot
+
+A simple Telegram bot to sequence files automatically.
+
+## ✅ Features
+- Auto numbering
+- Smart parsing
+- LS Mode
+- Channel support
+
+## ▶️ Commands
+/start  
+/sequence  
+/fileseq  
+/ls  
+/leaderboard  
+
+## 🚀 Run
+```bash
+pip install -r requirements.txt
+python3 sequence.py
+
+📄 License
+
+MIT
+
+---
+
+## 🔥 Recommendation (PRO TIP)
+
+**Best combo for GitHub:**
+- Use **Banner**
+- Then **Dark Theme README**
+- Emoji section headers only (not too many)
+
+Agar chaho to main:
+- 🎨 **Custom banner design prompt**
+- 🖼️ **SVG animated banner**
+- 🧾 **Auto-generated app.json + badges**
+- 🧠 **README SEO optimization**
+
+bhi bana deta hoon.  
+Bas next bolo 👌
