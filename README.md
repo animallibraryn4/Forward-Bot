@@ -87,5 +87,144 @@ Perfect, maine poora project deeply analyze kar liya hai. Neeche ek clean, profe
 Isme introduction → features → working flow → commands → config → deploy → troubleshooting → community support sab kuch covered hai.
 
 
+Samajh gaya 👍
+Neeche sirf INSTALLATION + RUN METHOD add karke de raha hoon, same coding-style, README-ready, taaki tum direct paste kar sako.
+Maine dono run commands clearly cover kiye hain.
 
+
+---
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<h2 align="center">
+    ──「 ⚙️ INSTALLATION & SETUP 」──
+</h2>
+
+==================================================
+
+📦 REQUIREMENTS
+---------------
+- Python 3.9 or higher
+- Telegram Bot Token (@BotFather)
+- Telegram API ID & API HASH
+- MongoDB URI
+- Git (optional, for cloning)
+
+--------------------------------------------------
+
+📥 INSTALLATION STEPS
+--------------------
+
+STEP 1: CLONE THE REPOSITORY
+----------------------------
+```bash
+git clone https://github.com/RioShin2025/SequenceBot.git
+cd SequenceBot
+
+OR upload files manually to your server/VPS.
+
+
+---
+
+STEP 2: INSTALL DEPENDENCIES
+
+pip install -r requirements.txt
+
+
+---
+
+STEP 3: CONFIGURE BOT
+
+Open config.py
+
+Fill in:
+
+API_ID
+
+API_HASH
+
+BOT_TOKEN
+
+MONGO_URI
+
+OWNER_ID
+
+
+(Optional) Configure FSUB_CHANNEL values
+
+
+
+---
+
+▶️ RUN METHODS
+
+METHOD 1: RUN WITH WEB SERVER (RECOMMENDED)
+
+Required for:
+
+Render
+
+Koyeb
+
+Railway
+
+
+Keeps bot alive using Flask web server
+
+
+python3 webserver.py
+
+✔ Starts:
+
+Flask keep-alive server
+
+TG File Sequence Bot
+
+
+
+---
+
+METHOD 2: DIRECT BOT RUN (VPS / LOCAL)
+
+Recommended for:
+
+VPS
+
+Local machine
+
+Termux
+
+
+
+python3 sequence.py
+
+✔ Starts:
+
+TG File Sequence Bot directly
+
+No web server
+
+
+
+---
+
+📝 NOTES
+
+Do NOT run both commands together.
+
+Use only ONE run method at a time.
+
+For cloud platforms, always use: python3 webserver.py
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+Agar chaho to next step me main:
+- **Heroku / Render / Koyeb ke separate step-by-step blocks**
+- **Environment variables (.env) version**
+- Ya **Docker-less deployment guide**
+
+bhi isi exact style me add kar dunga 🔥
 
